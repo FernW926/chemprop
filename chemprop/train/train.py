@@ -22,7 +22,7 @@ def train(model: MoleculeModel,
           args: TrainArgs,
           n_iter: int = 0,
           logger: logging.Logger = None,
-          writer: SummaryWriter = None) -> int:
+          writer: SummaryWriter = None) -> Tuple[int, List[float]]: 
     """
     Trains a model for an epoch.
 
@@ -41,6 +41,7 @@ def train(model: MoleculeModel,
 
     model.train()
     loss_sum = iter_count = 0
+    iteration_losses = [] # to store the loss of each epoches
 
     for batch in tqdm(data_loader, total=len(data_loader), leave=False):
         # Prepare batch
@@ -112,6 +113,7 @@ def train(model: MoleculeModel,
 
         loss_sum += loss.item()
         iter_count += 1
+        iteration_losses.append(loss.item()) # store the loss of each epoches
 
         loss.backward()
         if args.grad_clip:
@@ -141,4 +143,4 @@ def train(model: MoleculeModel,
                 for i, lr in enumerate(lrs):
                     writer.add_scalar(f'learning_rate_{i}', lr, n_iter)
 
-    return n_iter
+    return n_iter, iteration_losses
