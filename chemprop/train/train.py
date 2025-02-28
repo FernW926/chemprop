@@ -22,7 +22,7 @@ def train(model: MoleculeModel,
           args: TrainArgs,
           n_iter: int = 0,
           logger: logging.Logger = None,
-          writer: SummaryWriter = None) -> tuple[int, List[float]]: 
+          writer: SummaryWriter = None) -> tuple[int, list[float]]: 
     """
     Trains a model for an epoch.
 
